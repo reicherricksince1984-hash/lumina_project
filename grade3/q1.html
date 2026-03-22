@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <title>3rd Grade MissionList | Lumina Project</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 第1階層: チャプターセクション --- */
+        section.chapter-explanation {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+            clear: both;
+        }
+        section.chapter-explanation.active {
+            display: block;
+        }
+
+        /* --- 第2階層: 用語アコーディオン (Lumina Style) --- */
+        .term-accordion {
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .term-trigger {
+            width: 100%;
+            padding: 16px;
+            background: transparent; /* 白背景を撤廃 */
+            border: none;
+            text-align: left;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff; /* 文字を白に */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .term-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .term-trigger.active {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .term-trigger::after {
+            content: '▶';
+            font-size: 0.8rem;
+            color: var(--accent-3); /* 3級のグリーン */
+            transition: transform 0.3s;
+        }
+
+        .term-trigger.active::after {
+            transform: rotate(90deg);
+        }
+
+        /* --- 第3階層: 4つのタブ (Lumina Style) --- */
+        .term-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.2); /* コンテンツ内を少し暗く */
+        }
+
+        .term-content.active {
+            display: block;
+        }
+
+        .tab-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            gap: 2px;
+            padding: 2px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 5px;
+            cursor: pointer;
+            border: none;
+            font-family: 'DotGothic16', sans-serif;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-3); /* 3級カラー */
+            color: #fff;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        .tab-panel {
+            display: none;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #eee;
+            background: transparent; /* 白背景を撤廃 */
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div id="header-placeholder"></div>
+        <div class="grade-header-box">
+            <div class="grade-status-line">
+                <span class="grade-badge">GRADE:03</span>
+                <div class="nav-actions">
+                    <a href="javascript:history.back();" class="back-link">◀ RETURN</a>
+                </div>
+            </div>
+            <h1>SELECT CHAPTER</h1>
+        </div>
+
+        <section class="grade-selection chapter-slider">
+            <div class="chapter-card">
+                <a href="#Chapter1" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 1</label>
+                            <p class="chapter-title"><ruby>会社<rt>かいしゃ</rt></ruby>を<ruby>作<rt>つく</rt></ruby>る</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="chapter-card">
+                <a href="#Chapter2" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 2</label>
+                            <p class="chapter-title">お<ruby>店<rt>みせ</rt></ruby>の<ruby>準備<rt>じゅんび</rt></ruby></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="chapter-card">
+                <a href="#Chapter3" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 3</label>
+                            <p class="chapter-title"><ruby>商売<rt>しょうばい</rt></ruby>の<ruby>開始<rt>かいし</rt></ruby></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="chapter-card">
+                <a href="#Chapter4" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 4</label>
+                            <p class="chapter-title"><ruby>会社<rt>かいしゃ</rt></ruby>を<ruby>続<rt>つづ</rt></ruby>けるための<ruby>支払<rt>しはら</rt></ruby>い</p>                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="chapter-card">
+                <a href="#Chapter5" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 5</label>
+                            <p class="chapter-title"><ruby>お金<rt>おかね</rt></ruby>を<ruby>増<rt>ふ</rt></ruby>やす</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="chapter-card">
+                <a href="#Chapter6" class="grade-card grade-3">
+                    <div class="card-content">
+                        <div class="grade-info">
+                            <label class="chapter">Chapter 6</label>
+                            <p class="chapter-title">1<ruby>年<rt>ねん</rt></ruby>のまとめ</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+<!--
+Chapter1
+-->
+        <section id="Chapter1" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="What">What is it?</button>
+                        <button class="tab-btn" data-tab="Explanation">Explanation</button>
+                        <button class="tab-btn" data-tab="Practice">Practice</button>
+                        <button class="tab-btn" data-tab="Question">Question</button>
+                    </div>
+    <!-- What -->
+                    <div class="tab-panel active" data-content="What">
+                        <label for="shihonkin" class="label-title">
+                            <span class="label-accent"></span>
+                            <ruby>資本金<rt>しほんきん</rt></ruby>とは?
+                        </label>
+                        
+                        <div class="label-content">
+                            <p class="jp-text">
+                                <ruby>会社<rt>かいしゃ</rt></ruby>を<ruby>設立<rt>せつりつ</rt></ruby>するために、<ruby>必要<rt>ひつよう</rt></ruby>なお<ruby>金<rt>かね</rt></ruby>の<ruby>勘定科目<rt>かんじょうかもく</rt></ruby>
+                            </p>
+                            <p class="en-text">
+                                Accounting categories for the money needed to establish a company.
+                            </p>
+                        </div>
+                        <label for="shihonkin" class="label-title">
+                            <span class="label-accent"></span>
+                            ホームポジションはどこ?
+                        </label>
+                        
+                        <div class="label-content">
+                            <p class="jp-text">
+                                <ruby>貸借対照表<rt>たいしゃくたいしょうひょう</rt></ruby>の『<ruby>純資産<rt>じゅんしさん</rt></ruby>（<ruby>資本<rt>しほん</rt></ruby>）』のグループ
+                            </p>
+                            <p class="en-text">
+                                The 'Net Assets' group on the balance sheet.
+                            </p>
+
+                            <table style="width: 100%; border-collapse: collapse; text-align: center; margin-top: 20px;">
+                                <tr>
+                                    <td rowspan="2" style="width: 50%; border: 1px solid white; padding: 20px; vertical-align: middle;">
+                                        <div style="font-size: 1.5em; font-weight: bold;"><ruby>資産<rt>しさん</rt></ruby></div>
+                                        <div style="font-size: 0.9em;">assets</div>
+                                    </td>
+                                    <td style="width: 50%; border: 1px solid white; padding: 10px; vertical-align: middle;">
+                                        <div style="font-size: 1.2em; font-weight: bold;"><ruby>負債<rt>ふさい</rt></ruby></div>
+                                        <div style="font-size: 0.9em;">liabilities</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 50%; border: 1px solid white; padding: 10px; background-color: #0000FF; color: #FFFFFF; vertical-align: middle;">
+                                        <div style="font-size: 1.2em; font-weight: bold;"><ruby>純資産（資本）<rt>じゅんしさん（しほん）</rt></ruby></div>
+                                        <div style="font-size: 0.9em;">net assets</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+    <!-- Explanation -->
+                    <div class="tab-panel" data-content="Explanation">
+                        <label class="label-title">
+                            <span class="label-accent"></span>
+                            <ruby>問題<rt>もんだい</rt></ruby>の<ruby>解<rt>と</rt></ruby>き<ruby>方<rt>かた</rt></ruby>は?
+                        </label>
+
+                        <div class="sample-question">
+                            <ruby>当社<rt>とうしゃ</rt></ruby>の<ruby>設立<rt>せつりつ</rt></ruby>にあたり、<ruby>定款<rt>ていかん</rt></ruby>で<ruby>定める<rt>さだめる</rt></ruby><ruby>発行可能株式総数<rt>はっこうかのうかぶしきそうすう</rt></ruby>■<ruby>株<rt>かぶ</rt></ruby>のうち、▲<ruby>株<rt>かぶ</rt></ruby>を1<ruby>株<rt>かぶ</rt></ruby>につき￥●で<ruby>発行<rt>発行</rt></ruby>し、<ruby>全額<rt>ぜんがく</rt></ruby>の<ruby>払込み<rt>はらいこみ</rt></ruby>を<ruby>受け<rt>うけ</rt></ruby>、これを▢▢<ruby>預金<rt>よきん</rt></ruby>とした。
+                        </div>
+
+                        <div class="step-container">
+                            <label class="step-badge">Step1</label>
+                            <div class="step-content">
+                                <p class="jp-text">文章の中に『<ruby>設立<rt>せつりつ</rt></ruby>』＋『<ruby>株式<rt>かぶしき</rt></ruby>を<ruby>発行<rt>はっこう</rt></ruby>』というワードがありますか？</p>
+                                <p class="en-text">Does the text contain the words “設立" and "株式を発行"?</p>
+                            </div>
+
+                            <div class="journal-table-wrapper">
+                                <table class="journal-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="debit"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="credit"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>資本金<rt>しほんきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">¥ ▲ × ●</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="step-container">
+                            <label class="step-badge">Step2</label>
+                            <div class="step-content">
+                                <p class="jp-text">
+                                    文章の中の▢▢<ruby>預金<rt>よきん</rt></ruby>の▢▢は『<ruby>普通<rt>ふつう</rt></ruby>』or『<ruby>当座<rt>とうざ</rt></ruby>』のどちらですか？
+                                </p>
+                                <p class="en-text">In the text, is the ▢▢ in ▢▢ deposit a '当座' or '普通'?</p>
+                            </div>
+
+                            <div class="sub-label">
+                                <span class="label-accent"></span><ruby>当座<rt>とうざ</rt></ruby>の<ruby>場合<rt>ばあい</rt></ruby>
+                            </div>
+                            <div class="journal-table-wrapper">
+                                <table class="journal-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="debit"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="credit"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>当座預金<rt>とうざよきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">¥ ▲ × ●</td>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>資本金<rt>しほんきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">¥ ▲ × ●</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> <div class="sub-label">
+                                <span class="label-accent"></span><ruby>普通<rt>ふつう</rt></ruby>の<ruby>場合<rt>ばあい</rt></ruby>
+                            </div>
+                            <div class="journal-table-wrapper">
+                                <table class="journal-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="debit"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="credit"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>普通預金<rt>ふつうよきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">¥ ▲ × ●</td>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>資本金<rt>しほんきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">¥ ▲ × ●</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+    <!-- Practice -->
+                    <div class="tab-panel" data-content="Practice">
+                        <label class="label-title">
+                            <span class="label-accent"></span>
+                            <ruby>練習問題<rt>れんしゅうもんだい</rt></ruby>
+                        </label>
+
+                        <div class="sample-question" style="line-height: 2.5; padding: 10px;">
+                            <ruby>株式会社<rt>かぶしきがいしゃ</rt></ruby>
+                            <span style="background-color: yellow; color: black; padding: 2px 0; border-radius: 2px;">
+                                <ruby>設立<rt>せつりつ</rt></ruby>
+                            </span>
+                            に<ruby>際し<rt>さいし</rt></ruby>、
+                            <span style="background-color: yellow; color: black; padding: 2px 0; border-radius: 2px;">
+                                <ruby>株式<rt>かぶしき</rt></ruby>
+                            </span>
+                            4,500<ruby>株<rt>かぶ</rt></ruby>を＠￥2,000で<ruby>発行<rt>はっこう</rt></ruby>し、<ruby>全額<rt>ぜんがく</rt></ruby>が
+                            <span style="background-color: red; color: white; padding: 2px 0; border-radius: 2px;">
+                                <ruby>普通預金口座<rt>ふつうよきんこうざ</rt></ruby>
+                            </span>
+                            に<ruby>振り込まれた<rt>ふりこまれた</rt></ruby>。
+                        </div>
+
+                        <div class="step-container">
+                            <label class="step-badge">Step1</label>
+                            <div class="step-content">
+                                <p class="jp-text">文章の中に『<ruby>設立<rt>せつりつ</rt></ruby>』＋『<ruby>株式<rt>かぶしき</rt></ruby>を<ruby>発行<rt>はっこう</rt></ruby>』というワードがありますか？</p>
+                                <p class="en-text">Does the text contain the words “設立" and "株式を発行"?</p>
+                            </div>
+
+                            <div class="journal-table-wrapper">
+                                <table class="journal-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="debit"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="credit"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text" style="background-color: yellow; color: black; padding: 2px 0; border-radius: 2px;"><ruby>資本金<rt>しほんきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">￥9,000,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="step-container">
+                            <label class="step-badge">Step2</label>
+                            <div class="step-content">
+                                <p class="jp-text">
+                                    文章の中の▢▢<ruby>預金<rt>よきん</rt></ruby>の▢▢は『<ruby>普通<rt>ふつう</rt></ruby>』or『<ruby>当座<rt>とうざ</rt></ruby>』のどちらですか？
+                                </p>
+                                <p class="en-text">In the text, is the ▢▢ in ▢▢ deposit a '当座' or '普通'?</p>
+                            </div>
+
+                            <div class="sub-label">
+                                <span class="label-accent"></span><ruby>普通<rt>ふつう</rt></ruby>の<ruby>場合<rt>ばあい</rt></ruby>
+                            </div>
+                            <div class="journal-table-wrapper">
+                                <table class="journal-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="debit"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="credit"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text" style="background-color: red; color: white; padding: 2px 0; border-radius: 2px;"><ruby>普通預金<rt>ふつうよきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">￥9,000,000</td>
+                                            <td>
+                                                <div class="account-item">
+                                                    <span class="main-text"><ruby>資本金<rt>しほんきん</rt></ruby></span>
+                                                </div>
+                                            </td>
+                                            <td class="num-cell highlight">￥9,000,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+    <!-- Question -->
+                    <div class="tab-panel" data-content="Question">
+                        <div id="shihonkin-Question" class="question" style="line-height: 2.5; padding: 10px;">
+                            <p class="loading-msg">Now Loading...</p>
+                        </div>
+                    </div>
+                    <div class="answer-section">
+                        <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
+                            <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                            <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                            <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                        </div>
+
+                        <div class="journal-table-wrapper">
+                            <table class="answer-table">
+                                <thead>
+                                    <tr>
+                                        <th class="side-header"><ruby>借方<rt>Debit</rt></ruby></th>
+                                        <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
+                                        <th class="side-header"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                        <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="answer-table-body">
+                                    <tr>
+                                        <td>
+                                            <select class="account-select">
+                                                <option value="">選択...</option>
+                                                <option value="cash">現金</option>
+                                                <option value="futsuyokin">普通預金</option>
+                                                <option value="tozayokin">当座預金</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <div class="amount-input-wrapper">
+                                                <span>¥</span>
+                                                <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select class="account-select">
+                                                <option value="">選択...</option>
+                                                <option value="shihonkin">資本金</option>
+                                                <option value="kariirekin">借入金</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <div class="amount-input-wrapper">
+                                                <span>¥</span>
+                                                <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="answer-feedback" class="feedback-panel" style="display: none;">
+                        </div>
+                        <button class="submit-answer-btn">
+                            <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!--
+Chapter2
+-->
+        <section id="Chapter2" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>ss資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】資本金を100万円準備しよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】家にある貯金箱を確認してみよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】資本金：商売を始めるための元手です。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】動画コンテンツをここに配置。</p></div>
+                </div>
+            </div>
+            
+            <div class="term-accordion">
+                <button class="term-trigger">借入金（かりいれきん）</button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】銀行で借りる計画を立てよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】いくら返す必要があるか考えよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】借入金：あとで返す約束で借りたお金。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】借入の仕組み解説動画。</p></div>
+                </div>
+            </div>
+        </section>
+<!-- Chapter3 -->
+        <section id="Chapter3" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>ss資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】資本金を100万円準備しよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】家にある貯金箱を確認してみよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】資本金：商売を始めるための元手です。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】動画コンテンツをここに配置。</p></div>
+                </div>
+            </div>
+            
+            <div class="term-accordion">
+                <button class="term-trigger">借入金（かりいれきん）</button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】銀行で借りる計画を立てよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】いくら返す必要があるか考えよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】借入金：あとで返す約束で借りたお金。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】借入の仕組み解説動画。</p></div>
+                </div>
+            </div>
+        </section>
+<!-- Chapter4 -->
+        <section id="Chapter4" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>ss資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】資本金を100万円準備しよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】家にある貯金箱を確認してみよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】資本金：商売を始めるための元手です。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】動画コンテンツをここに配置。</p></div>
+                </div>
+            </div>
+            
+            <div class="term-accordion">
+                <button class="term-trigger">借入金（かりいれきん）</button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】銀行で借りる計画を立てよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】いくら返す必要があるか考えよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】借入金：あとで返す約束で借りたお金。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】借入の仕組み解説動画。</p></div>
+                </div>
+            </div>
+        </section>
+<!-- Chapter5 -->
+        <section id="Chapter5" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>ss資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】資本金を100万円準備しよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】家にある貯金箱を確認してみよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】資本金：商売を始めるための元手です。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】動画コンテンツをここに配置。</p></div>
+                </div>
+            </div>
+            
+            <div class="term-accordion">
+                <button class="term-trigger">借入金（かりいれきん）</button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】銀行で借りる計画を立てよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】いくら返す必要があるか考えよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】借入金：あとで返す約束で借りたお金。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】借入の仕組み解説動画。</p></div>
+                </div>
+            </div>
+        </section>
+<!-- Chapter6 -->
+        <section id="Chapter6" class="chapter-explanation">
+            <div class="term-accordion">
+                <button class="term-trigger"><ruby>ss資本金<rt>しほんきん</rt></ruby></button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】資本金を100万円準備しよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】家にある貯金箱を確認してみよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】資本金：商売を始めるための元手です。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】動画コンテンツをここに配置。</p></div>
+                </div>
+            </div>
+            
+            <div class="term-accordion">
+                <button class="term-trigger">借入金（かりいれきん）</button>
+                <div class="term-content">
+                    <div class="tab-container">
+                        <button class="tab-btn active" data-tab="mission">ミッション</button>
+                        <button class="tab-btn" data-tab="hint">ヒント</button>
+                        <button class="tab-btn" data-tab="vocab">ことば</button>
+                        <button class="tab-btn" data-tab="video">動画</button>
+                    </div>
+                    <div class="tab-panel active" data-content="mission"><p>【ミッション】銀行で借りる計画を立てよう！</p></div>
+                    <div class="tab-panel" data-content="hint"><p>【ヒント】いくら返す必要があるか考えよう。</p></div>
+                    <div class="tab-panel" data-content="vocab"><p>【ことば】借入金：あとで返す約束で借りたお金。</p></div>
+                    <div class="tab-panel" data-content="video"><p>【動画】借入の仕組み解説動画。</p></div>
+                </div>
+            </div>
+        </section>
+        </main>
+
+    <div id="footer-placeholder"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. チャプターカード切り替え
+    document.querySelectorAll('.grade-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (!targetSection) return;
+
+            document.querySelectorAll('.chapter-explanation').forEach(s => s.classList.remove('active'));
+            targetSection.classList.add('active');
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    });
+
+    // 2. 用語アコーディオン開閉
+    document.querySelectorAll('.term-trigger').forEach(trigger => {
+        trigger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            content.classList.toggle('active');
+        });
+    });
+
+    // 3. タブ切り替え
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const container = this.closest('.term-content');
+            const type = this.getAttribute('data-tab');
+
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            container.querySelectorAll('.tab-panel').forEach(p => {
+                p.classList.remove('active');
+                if(p.getAttribute('data-content') === type) p.classList.add('active');
+            });
+        });
+    });
+
+    // 初回読み込みの実行
+    loadMissionData('shihonkin-Question', '01_shihonkin');
+});
+
+// --- グローバル変数の定義 ---
+let currentAnswer = null; 
+let missionList = [];     // 現在のファイル内の問題リスト
+let currentSubIndex = 0;  // 何番目の小問か
+
+/**
+ * ファイルを読み込んで問題をセットアップする
+ */
+async function loadMissionData(targetId, fileName) {
+    const container = document.getElementById(targetId);
+    if (!container) return;
+
+    try {
+        const response = await fetch(`../assets/data/grade3/${fileName}.html`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const html = await response.text();
+        container.innerHTML = html;
+
+        // JSONデータを読み込む
+        const dataScript = container.querySelector('#mission-data-list');
+        if (dataScript) {
+            missionList = JSON.parse(dataScript.textContent);
+            currentSubIndex = 0; // ファイル読み込み時にインデックスをリセット
+            showSubQuestion();   // 最初の問題を表示
+        }
+    } catch (e) {
+        console.error("データの読み込みに失敗しました:", e);
+    }
+}
+
+/**
+ * 小問を画面に表示する
+ */
+function showSubQuestion() {
+    if (missionList.length === 0) return;
+
+    const qData = missionList[currentSubIndex];
+    const qTextContainer = document.getElementById('dynamic-question-text');
+    
+    if (qTextContainer) {
+        qTextContainer.innerHTML = qData.qText;
+    }
+
+    // 次のファイル情報を取得
+    const nextFileInfo = document.getElementById('next-file-info');
+    const nextFileName = nextFileInfo ? nextFileInfo.dataset.next : "";
+
+    // 現在の正解データを更新
+    currentAnswer = {
+        ...qData,
+        next: nextFileName
+    };
+}
+
+/**
+ * 「回答確認」ボタンのクリックイベント
+ */
+document.querySelector('.submit-answer-btn').addEventListener('click', () => {
+    if (!currentAnswer) return;
+
+    const feedback = document.getElementById('answer-feedback');
+    const selectDebit = document.querySelectorAll('.account-select')[0]; 
+    const selectCredit = document.querySelectorAll('.account-select')[1];
+    const inputDebitAmt = document.querySelectorAll('.amount-input')[0]; 
+    const inputCreditAmt = document.querySelectorAll('.amount-input')[1];
+
+    const cleanAmount = (val) => val.replace(/,/g, '').trim();
+
+    const userDebitAcc = selectDebit.value;
+    const userCreditAcc = selectCredit.value;
+    const userDebitAmt = cleanAmount(inputDebitAmt.value);
+    const userCreditAmt = cleanAmount(inputCreditAmt.value);
+
+    // 正解判定
+    const isCorrect = 
+        userDebitAcc  === currentAnswer.debitAcc && 
+        userDebitAmt  === currentAnswer.debitAmt &&
+        userCreditAcc === currentAnswer.creditAcc &&
+        userCreditAmt === currentAnswer.creditAmt;
+
+    if (isCorrect) {
+        // --- 【正解の場合】 ---
+        feedback.style.display = "block";
+        feedback.className = "feedback-panel success";
+        feedback.innerHTML = `<strong>MISSION COMPLETE!</strong><br><ruby>正解<rt>せいかい</rt></ruby>です！`;
+        
+        setTimeout(() => {
+            currentSubIndex++; // 次の小問へ進める
+            
+            // フィードバックを消し、入力をリセット
+            feedback.style.display = "none";
+            inputDebitAmt.value = "";
+            inputCreditAmt.value = "";
+            selectDebit.selectedIndex = 0;
+            selectCredit.selectedIndex = 0;
+
+            if (currentSubIndex < missionList.length) {
+                // まだ小問がある場合、次の小問を表示
+                showSubQuestion(); 
+            } else {
+                // 全ての小問が終わったら、次のファイルをロード
+                loadMissionData('shihonkin-Question', currentAnswer.next);
+            }
+        }, 2000);
+
+    } else {
+        // --- 【不正解の場合】 ---
+        feedback.style.display = "block";
+        feedback.className = "feedback-panel"; 
+        feedback.innerHTML = `
+            <span style="color: #ff6b6b;"><ruby>残念<rt>ざんねん</rt></ruby>！</span><br>
+            <ruby>正解<rt>せいかい</rt></ruby>は <br>
+            <ruby>借方<rt>DEBIT</rt></ruby>: <strong>${currentAnswer.debitAccName}</strong> ￥<strong>${currentAnswer.debitAmtDisp}</strong> / <br>
+            <ruby>貸方<rt>CREDIT</rt></ruby>: <strong>${currentAnswer.creditAccName}</strong> ￥<strong>${currentAnswer.creditAmtDisp}</strong> です。<br>
+            <ruby>正解<rt>せいかい</rt></ruby>を<ruby>入力<rt>にゅうりょく</rt></ruby>して<ruby>次<rt>つぎ</rt></ruby>へ<ruby>進<rt>すす</rt></ruby>みましょう。
+        `;
+    }
+});
+</script>
+<script src="../js/main.js"></script>
+</body>
+</html>

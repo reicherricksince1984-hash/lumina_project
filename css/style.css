@@ -1,0 +1,727 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+:root {
+    --primary-color: #ffffff;
+    --accent-2: rgba(230, 126, 34, 0.6); /* 2級: オレンジ（半透明） */
+    --accent-3: rgba(39, 174, 96, 0.6);  /* 3級: グリーン（半透明） */
+    --accent-4: rgba(41, 128, 185, 0.6); /* 4級: ブルー（半透明） */
+    
+    /* 背景を深い紺色のグラデーションに変更 */
+    --bg-color: #000022; 
+    --bg-gradient: radial-gradient(circle at center, #000044 0%, #000011 100%);
+    --text-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* すべてのフォントをドット風に変更 */
+    font-family: 'DotGothic16', sans-serif;
+    background: var(--bg-gradient);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    padding-top: 80px;    /* ヘッダー用の余白（既存） */
+    padding-bottom: 100px; /* ★追加：フッターと重ならないための余白 */
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.hero {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.hero h1 {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+    text-shadow: 2px 2px 0px #000; /* 文字に影をつけてゲーム感を出す */
+}
+
+.hero p {
+    font-size: 0.9rem;
+    color: #ccc;
+    text-shadow: 1px 1px 0px #000;
+}
+
+/* カードのデザインを半透明の光沢ボタンに変更 */
+.grade-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.grade-card {
+    text-decoration: none;
+    position: relative;
+    border-radius: 16px;
+    padding: 24px;
+    display: block;
+    transition: all 0.3s ease;
+    
+    /* グラスモーフィズム（半透明・ぼかし） */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* 共通の枠線と光沢グラデーション */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-image: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.2) 0%, 
+        rgba(255, 255, 255, 0) 50%, 
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* スライダー専用の上書き設定 */
+.chapter-slider {
+    flex-direction: row !important; /* 縦並びを横並びに強制変更 */
+    overflow-x: auto;              /* 横スクロールを許可 */
+    scroll-snap-type: x mandatory;  /* ピタッと止まる設定 */
+    gap: 15px;                     /* カードの間隔 */
+    padding: 20px 10px;            /* 上下左右の余白 */
+    -webkit-overflow-scrolling: touch; /* 指での操作を滑らかに */
+}
+
+/* スライダー内のカード幅を調整 */
+.chapter-slider .chapter-card {
+    flex: 0 0 80%;                 /* 画面の80%の幅にする */
+    scroll-snap-align: center;      /* スクロール時に中央で止まる */
+    min-width: 260px;  
+    height: 90px;
+}
+
+/* スクロールバーを非表示にする（ゲーム機のような見た目にする場合） */
+.chapter-slider::-webkit-scrollbar {
+    display: none;
+}
+/* 各級のアクセントカラー（光沢と枠線に色をつける） */
+.grade-2 { 
+    border-left: 8px solid #e67e22;
+    background-color: rgba(230, 126, 34, 0.1);
+}
+.grade-3 { 
+    border-left: 8px solid #27ae60;
+    background-color: rgba(39, 174, 96, 0.1);
+}
+.grade-4 { 
+    border-left: 8px solid #2980b9;
+    background-color: rgba(41, 128, 185, 0.1);
+}
+
+.grade-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+}
+
+.grade-card:active {
+    transform: scale(0.96);
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.card-content.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+.grade-info h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.grade-info p {
+    font-size: 0.9rem;
+    color: #ddd;
+    margin-top: 4px;
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+}
+
+/**********
+header
+***********/
+/* --- 共通ヘッダーの固定スタイル --- */
+.common-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    
+    /* 背景：少し透明な紺色とブラー（背後が透けるサイバー感） */
+    background: rgba(0, 0, 20, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between; /* ★これでロゴを左、ボタンを右に配置 */
+    align-items: center;            /* 上下中央揃え */
+    padding: 15px 20px;            /* 上下15px、左右20pxの余白 */
+    max-width: 100%;
+}
+
+/* 左上のロゴ（h1） */
+.system-logo {
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* 右上のリンク（RETREATボタン） */
+.back-link {
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+.back-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.container {
+    padding-top: 80px; /* ヘッダーの高さ分、コンテンツを下げる */
+}
+
+/* 問題選択画面のヘッダー */
+.grade-header-box {
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+
+.grade-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 12px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.grade-header-box h1 {
+    font-size: 1.0rem;
+    text-shadow: 2px 2px 0px #000;
+}
+
+/* 問題リストの縦並びボタン */
+.question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.question-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    
+    /* グラスモーフィズム継承 */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.question-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transform: translateX(5px); /* 右に少しスライドする演出 */
+}
+
+.question-item:active {
+    transform: scale(0.98);
+}
+
+.q-id {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-right: 20px;
+    padding-right: 15px;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.q-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.q-title {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.q-desc {
+    font-size: 0.7rem;
+    color: #aaa;
+    letter-spacing: 1px;
+}
+
+.q-arrow {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1rem;
+}
+
+/**********
+footer
+***********/
+/* 右下固定のフッターデザイン */
+#footer-placeholder {
+    position: fixed;
+    bottom: 16px;   /* 画面下からの距離 */
+    right: 16px;    /* 画面右からの距離 */
+    z-index: 1000;  /* 他の要素より上に表示 */
+}
+
+/* includes/footer.html 内の要素に対するスタイル */
+.footer-content {
+    background-color: rgba(44, 62, 80, 0.9); /* 少し透明なネイビー */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px; /* 丸みのあるタブのようなデザイン */
+    font-size: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px); /* 背景をぼかして高級感を出す */
+    white-space: nowrap; /* 改行させない */
+}
+
+.footer-content a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 8px;
+    opacity: 0.8;
+}
+/* --- 級ヘッダー内のレイアウト調整 --- */
+.grade-header-box {
+    margin-bottom: 30px;
+}
+
+.grade-status-line {
+    display: flex;
+    justify-content: space-between; /* 両端に振り分ける */
+    align-items: center;            /* 上下中央を揃える */
+    margin-bottom: 12px;
+}
+
+/* バッジの余白をリセット（flex制御のため） */
+.grade-badge {
+    margin-bottom: 0; 
+}
+
+/* ◀ RETURN ボタンのスタイル微調整 */
+.nav-actions .back-link {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.nav-actions .back-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+
+
+.chapter{
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+}
+.chapter-title {
+    font-size: 0.9rem; /* 少し小さめにする */
+    margin-top: 4px;   /* Chapter 1 との隙間を調整 */
+    color: #fff;       /* 文字色を白に */
+    opacity: 0.8;      /* 少し透過させると「ルミナ」らしい透明感が出ます */
+}
+rt {
+    font-size: 0.6em; /* 標準より少し小さめに */
+    letter-spacing: 0; /* ルビの間隔を詰めると読みやすい */
+}
+
+/* --- ラベル（タイトル）のデザイン --- */
+.label-title {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    padding: 5px 15px 5px 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    /* 左から右へ消えるグラデーション背景 */
+    background: linear-gradient(90deg, rgba(39, 174, 96, 0.4) 0%, rgba(39, 174, 96, 0) 100%);
+    border-left: 4px solid #27ae60; /* 3級のアクセントカラー */
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+}
+
+/* ラベル内の装飾（小さなドットなど） */
+.label-accent {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    margin-right: 8px;
+    display: inline-block;
+    box-shadow: 0 0 8px #27ae60;
+}
+
+/* --- コンテンツテキストの調整 --- */
+.label-content {
+    padding-left: 5px;
+}
+
+.jp-text {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.en-text {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5); /* 英語は少し薄くして情報の優先度を下げる */
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* --- ステップバッジ（Step1, Step2...）のデザイン --- */
+.step-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    margin: 10px 8px 10px 0;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1); /* ベースは半透明 */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    /* 3級のグリーンをほのかに光らせる */
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
+}
+
+
+/* 擬似要素で「装飾的な角」を追加（よりサイバーに） */
+.step-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    border-top: 1px solid #27ae60;
+    border-left: 1px solid #27ae60;
+}
+
+/* サンプル問題文のスタイル（可読性アップ） */
+.sample-question {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    margin: 15px 0;
+    font-size: 0.9rem;
+    line-height: 2;
+    color: #eee;
+}
+
+/* --- 仕訳テーブル全体のレスポンシブ修正 --- */
+.journal-table-wrapper {
+    margin: 15px 0;
+    width: 100%;
+    /* 横スクロールを発生させず、中身を収める */
+    overflow: hidden; 
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.journal-table {
+    width: 100%;
+    table-layout: fixed; /* 列の幅を強制固定 */
+    border-collapse: collapse;
+    font-family: 'DotGothic16', sans-serif;
+    color: #fff;
+    /* モバイル向けに全体の文字サイズを少し下げる */
+    font-size: 0.75rem; 
+}
+
+/* 各列の幅を再調整（金額エリアを少し広めに確保） */
+.journal-table th.debit, 
+.journal-table th.credit {
+    width: 28%; /* 科目名 */
+}
+.journal-table th.amount {
+    width: 22%; /* 金額（見切れ防止のため少し拡張） */
+}
+
+.journal-table th, 
+.journal-table td {
+    padding: 8px 4px; /* パディングを削って横幅を稼ぐ */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    vertical-align: middle;
+    /* 折り返し設定 */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 金額セルの詳細設定 */
+.num-cell {
+    text-align: right;
+    padding-right: 4px !important;
+    /* 金額が長い場合でも文字を小さくして一行に収める */
+    font-size: 0.7rem; 
+    white-space: nowrap; 
+    letter-spacing: -0.5px; /* 字間を詰めて横幅を節約 */
+}
+
+/* 勘定科目のテキスト */
+.account-item {
+    display: block;
+    text-align: center;
+}
+
+.account-item .main-text {
+    line-height: 1.2;
+    display: inline-block;
+}
+
+/* --- iPhone SE 等の極端に狭い画面（375px以下）への最終調整 --- */
+@media screen and (max-width: 375px) {
+    .journal-table {
+        font-size: 0.7rem; /* さらに一段階小さく */
+    }
+    .num-cell {
+        font-size: 0.65rem;
+    }
+    .journal-table th, 
+    .journal-table td {
+        padding: 6px 2px;
+    }
+}
+
+/* 解答セクション全体のスタイル */
+.answer-section {
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.answer-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px; /* スマホ向けに少し小さく */
+}
+
+.answer-table th, .answer-table td {
+    border: 1px solid #444;
+    padding: 6px 4px;
+    text-align: center;
+}
+
+/* ドロップダウンのスタイル */
+.account-select {
+    width: 100%;
+    background: #1a1a2e;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 12px;
+}
+
+/* 金額入力欄のスタイル */
+.amount-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.amount-input {
+    width: 60px; /* スマホ幅に合わせて調整 */
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    color: #fff;
+    text-align: right;
+    padding: 2px;
+    outline: none;
+}
+
+.amount-input:focus {
+    border-bottom: 2px solid #00ffcc;
+}
+
+/* 回答確認ボタン */
+/* --- 回答確認ボタン (Lumina Crystal Glass Style) --- */
+.submit-answer-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    /* すべてのフォントをドット風に指定 */
+    font-family: 'DotGothic16', sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    outline: none;
+
+    /* --- クリスタルガラス（強い透明感と光沢） --- */
+    /* 背景：ほぼ完全に透明な白 */
+    background: rgba(255, 255, 255, 0.02);
+    /* 強いぼかし効果 */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    /* 枠線：非常に細く、白い光のライン */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    
+    /* --- テキストとクリスタルエフェクト --- */
+    /* 文字色：白 */
+    color: #ffffff;
+    /* 強力なテキストシャドウで光の屈折を表現 */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 2px 2px 2px rgba(0, 0, 0, 0.8);
+    
+    /* クリスタル感を出す影とハイライト */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5),
+                /* エッジにグリーンのネオン（3級カラー） */
+                inset 0 0 10px rgba(39, 174, 96, 0.3),
+                /* 上部に強いハイライト（光沢） */
+                inset 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* --- タップ（アクティブ）時の演出：光の透過を強める --- */
+.submit-answer-btn:active {
+    transform: scale(0.97); /* 少し沈む */
+    /* 背景：少し明るくして光の透過を強める */
+    background: rgba(255, 255, 255, 0.1);
+    /* 発光を強める */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 15px rgba(39, 174, 96, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* --- PCホバー時の演出：さらに強い光沢 --- */
+@media (hover: hover) {
+    .submit-answer-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6),
+                    0 0 10px rgba(39, 174, 96, 0.5),
+                    inset 0 8px 20px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* --- ルビ（英字）の微調整 --- */
+.submit-answer-btn rt {
+    font-size: 0.6em; /* 標準より小さめに */
+    letter-spacing: 0.1em; /* 間隔を少し広げて読みやすく */
+    margin-top: 3px;
+    opacity: 0.8; /* 少し透過させて透明感を出す */
+}
+
+.feedback-panel {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    font-family: 'DotGothic16', sans-serif;
+    
+    /* グらスモーフィズム */
+    background: rgba(255, 100, 100, 0.1); /* 不正解時は少し赤みを入れる */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    color: #ffcccc;
+    
+    /* アニメーション */
+    animation: fadeInSlide 0.4s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 正解時のスタイル（必要なら） */
+.feedback-panel.success {
+    background: rgba(100, 255, 150, 0.1);
+    border: 1px solid rgba(100, 255, 150, 0.3);
+    color: #ccffdd;
+}
