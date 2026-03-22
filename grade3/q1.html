@@ -477,62 +477,64 @@ Chapter1
                         <div id="shihonkin-Question" class="question" style="line-height: 2.5; padding: 10px;">
                             <p class="loading-msg">Now Loading...</p>
                         </div>
-                    </div>
-                    <div class="answer-section">
-                        <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
-                            <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
-                            <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
-                            <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
-                        </div>
 
-                        <div class="journal-table-wrapper">
-                            <table class="answer-table">
-                                <thead>
-                                    <tr>
-                                        <th class="side-header"><ruby>借方<rt>Debit</rt></ruby></th>
-                                        <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
-                                        <th class="side-header"><ruby>貸方<rt>Credit</rt></ruby></th>
-                                        <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="answer-table-body">
-                                    <tr>
-                                        <td>
-                                            <select class="account-select">
-                                                <option value="">選択...</option>
-                                                <option value="cash">現金</option>
-                                                <option value="futsuyokin">普通預金</option>
-                                                <option value="tozayokin">当座預金</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <div class="amount-input-wrapper">
-                                                <span>¥</span>
-                                                <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <select class="account-select">
-                                                <option value="">選択...</option>
-                                                <option value="shihonkin">資本金</option>
-                                                <option value="kariirekin">借入金</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <div class="amount-input-wrapper">
-                                                <span>¥</span>
-                                                <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="answer-section">
+                            <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
+                                <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                                <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                                <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                            </div>
+
+                            <div class="journal-table-wrapper">
+                                <table class="answer-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="side-header"><ruby>借方<rt>Debit</rt></ruby></th>
+                                            <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
+                                            <th class="side-header"><ruby>貸方<rt>Credit</rt></ruby></th>
+                                            <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="answer-table-body">
+                                        <tr>
+                                            <td>
+                                                <select class="account-select">
+                                                    <option value="">選択...</option>
+                                                    <option value="cash">現金</option>
+                                                    <option value="futsuyokin">普通預金</option>
+                                                    <option value="tozayokin">当座預金</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="amount-input-wrapper">
+                                                    <span>¥</span>
+                                                    <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <select class="account-select">
+                                                    <option value="">選択...</option>
+                                                    <option value="shihonkin">資本金</option>
+                                                    <option value="kariirekin">借入金</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="amount-input-wrapper">
+                                                    <span>¥</span>
+                                                    <input type="text" class="amount-input" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="answer-feedback" class="feedback-panel" style="display: none;"></div>
+
+                            <button class="submit-answer-btn">
+                                <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
+                            </button>
                         </div>
-                        <div id="answer-feedback" class="feedback-panel" style="display: none;">
-                        </div>
-                        <button class="submit-answer-btn">
-                            <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
-                        </button>
                     </div>
                 </div>
             </div>
