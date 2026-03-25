@@ -198,7 +198,7 @@
             </div>
         </section>
 <!--
-Chapter1
+Chapter1 資本金
 -->
         <section id="Chapter1" class="chapter-explanation">
             <div class="term-accordion">
@@ -212,7 +212,7 @@ Chapter1
                     </div>
     <!-- What -->
                     <div class="tab-panel active" data-content="What">
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             <ruby>資本金<rt>しほんきん</rt></ruby>とは?
                         </label>
@@ -225,7 +225,7 @@ Chapter1
                                 Accounting categories for the money needed to establish a company.
                             </p>
                         </div>
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             ホームポジションはどこ?
                         </label>
@@ -480,9 +480,9 @@ Chapter1
 
                         <div class="answer-section">
                             <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
-                                <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
-                                <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
-                                <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                                <button type="button" class="control-btn add-row-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                                <button type="button" class="control-btn remove-row-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                                <span class="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
                             </div>
 
                             <div class="journal-table-wrapper">
@@ -495,7 +495,7 @@ Chapter1
                                             <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="answer-table-body">
+                                    <tbody class="answer-table-body">
                                         <tr>
                                             <td>
                                                 <select class="account-select">
@@ -536,7 +536,7 @@ Chapter1
                                 </table>
                             </div>
 
-                            <div id="answer-feedback" class="feedback-panel" style="display: none;"></div>
+                            <div class="feedback-panel answer-feedback" style="display: none;"></div>
 
                             <button class="submit-answer-btn">
                                 <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
@@ -548,7 +548,7 @@ Chapter1
         </section>
 
 <!--
-Chapter2
+Chapter2　備品 / 建物 / 車両運搬具
 -->
         <section id="Chapter2" class="chapter-explanation">
             <div class="term-accordion">
@@ -562,7 +562,7 @@ Chapter2
                     </div>
     <!-- What -->
                     <div class="tab-panel active" data-content="What">
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             <ruby>備品 / 建物 / 車両運搬具<rt>びひん / たてもの / しゃりょううんぱんぐ</rt></ruby>とは?
                         </label>
@@ -579,7 +579,7 @@ Chapter2
                                 The marathon course of tools necessary to run a company.
                             </p>
                         </div>
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             ホームポジションはどこ?
                         </label>
@@ -931,9 +931,9 @@ Chapter2
 
                         <div class="answer-section">
                             <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
-                                <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
-                                <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
-                                <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                                <button type="button" class="control-btn add-row-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                                <button type="button" class="control-btn remove-row-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                                <span class="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
                             </div>
 
                             <div class="journal-table-wrapper">
@@ -946,7 +946,7 @@ Chapter2
                                             <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="answer-table-body">
+                                    <tbody class="answer-table-body">
                                         <tr>
                                             <td>
                                                 <select class="account-select">
@@ -987,7 +987,7 @@ Chapter2
                                 </table>
                             </div>
 
-                            <div id="answer-feedback" class="feedback-panel" style="display: none;"></div>
+                            <div class="feedback-panel answer-feedback" style="display: none;"></div>
 
                             <button class="submit-answer-btn">
                                 <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
@@ -997,12 +997,15 @@ Chapter2
                 </div>
             </div>
         </section>
-<!-- Chapter3 -->
+
+<!-- 
+Chapter3 仕入　/　売上
+ -->
         <section id="Chapter3" class="chapter-explanation">
             <div class="term-accordion">
-<!----------------  
- 仕入
------------------->
+                <!----------------  
+                仕入
+                ------------------>
                 <button class="term-trigger"><ruby>仕入<rt>しいれ</rt></ruby></button>
                 <div class="term-content">
                     <div class="tab-container">
@@ -1013,7 +1016,7 @@ Chapter2
                     </div>
     <!-- What -->
                     <div class="tab-panel active" data-content="What">
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             <ruby>仕入<rt>しいれ</rt></ruby>とは?
                         </label>
@@ -1026,7 +1029,7 @@ Chapter2
                                 Accounting entries used when purchasing goods.
                             </p>
                         </div>
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             ホームポジションはどこ?
                         </label>
@@ -1547,9 +1550,9 @@ Chapter2
 
                         <div class="answer-section">
                             <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
-                                <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
-                                <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
-                                <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                                <button type="button" class="control-btn add-row-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                                <button type="button" class="control-btn remove-row-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                                <span class="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
                             </div>
 
                             <div class="journal-table-wrapper">
@@ -1562,7 +1565,7 @@ Chapter2
                                             <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="answer-table-body">
+                                    <tbody class="answer-table-body">
                                         <tr>
                                             <td>
                                                 <select class="account-select">
@@ -1603,7 +1606,7 @@ Chapter2
                                 </table>
                             </div>
 
-                            <div id="answer-feedback" class="feedback-panel" style="display: none;"></div>
+                            <div class="feedback-panel answer-feedback" style="display: none;"></div>
 
                             <button class="submit-answer-btn">
                                 <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
@@ -1611,12 +1614,14 @@ Chapter2
                         </div>
                     </div>
                 </div>
+            </div>  
+        </div>       
 <!----------------  
  売上
 ------------------>
-                <div class="term-accordion">
+            <div class="term-accordion">
                     <button class="term-trigger"><ruby>売上<rt>うりあげ</rt></ruby></button>
-                    <div class="term-content">
+                <div class="term-content">
                     <div class="tab-container">
                         <button class="tab-btn active" data-tab="What">What is it?</button>
                         <button class="tab-btn" data-tab="Explanation">Explanation</button>
@@ -1625,7 +1630,7 @@ Chapter2
                     </div>
     <!-- What -->
                     <div class="tab-panel active" data-content="What">
-                        <label for="shihonkin" class="label-title">
+                        <label class="label-title">
                             <span class="label-accent"></span>
                             <ruby>売上<rt>うりあげ</rt></ruby>とは?
                         </label>
@@ -2677,9 +2682,9 @@ Chapter2
 
                         <div class="answer-section">
                             <div class="row-controls" style="margin-bottom: 10px; display: flex; gap: 10px;">
-                                <button type="button" id="add-row-btn" class="control-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
-                                <button type="button" id="remove-row-btn" class="control-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
-                                <span id="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
+                                <button type="button" class="control-btn add-row-btn" style="background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+</button>
+                                <button type="button" class="control-btn remove-row-btn" style="background: #dc3545; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">-</button>
+                                <span class="row-count-display" style="font-size: 12px; color: #aaa; align-self: center;">(1/5)</span>
                             </div>
 
                             <div class="journal-table-wrapper">
@@ -2692,7 +2697,7 @@ Chapter2
                                             <th class="amount-header"><ruby>金額<rt>Price</rt></ruby></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="answer-table-body">
+                                    <tbody class="answer-table-body">
                                         <tr>
                                             <td>
                                                 <select class="account-select">
@@ -2733,7 +2738,7 @@ Chapter2
                                 </table>
                             </div>
 
-                            <div id="answer-feedback" class="feedback-panel" style="display: none;"></div>
+                            <div class="feedback-panel answer-feedback" style="display: none;"></div>
 
                             <button class="submit-answer-btn">
                                 <ruby>回答確認<rt>CHECK ANSWER</rt></ruby>
@@ -2741,9 +2746,12 @@ Chapter2
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
             </div>
         </section>
+
+
+
 <!-- Chapter4 -->
         <section id="Chapter4" class="chapter-explanation">
             <div class="term-accordion">
@@ -2884,7 +2892,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const container = this.closest('.term-content');
-            const chapterSection = this.closest('.chapter-explanation');
             const type = this.getAttribute('data-tab');
 
             if (!container) return;
@@ -2899,23 +2906,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Questionタブを押したときだけ、そのchapter用の問題を読み込む
-            if (type === 'Question' && chapterSection) {
-                if (chapterSection.id === 'Chapter1') {
-                    loadMissionData('shihonkin-Question', '01_shihonkin');
-                } else if (chapterSection.id === 'Chapter2') {
-                    loadMissionData('bihin-Question', '02_bihin_etc');
-                } else if (chapterSection.id === 'Chapter3') {
-                    loadMissionData('shiire-Question', '03_shiire');
-                } else if (chapterSection.id === 'Chapter3') {
-                    loadMissionData('uriage-Question', '04_uriage');
+            // Questionタブを押したときだけ、そのterm-accordion用の問題を読み込む
+            if (type === 'Question') {
+                const questionPanel = container.querySelector('.tab-panel[data-content="Question"]');
+                const questionElement = questionPanel ? questionPanel.querySelector('.question[id]') : null;
+                if (!questionElement) return;
+
+                const questionId = questionElement.id;
+                const missionMap = {
+                    'shihonkin-Question': '01_shihonkin',
+                    'bihin-Question': '02_bihin_etc',
+                    'shiire-Question': '03_shiire',
+                    'uriage-Question': '04_uriage'
+                };
+
+                const fileName = missionMap[questionId];
+                if (fileName) {
+                    loadMissionData(questionId, fileName);
                 }
             }
         });
     });
 
-    // 回答確認ボタンはイベント委譲で処理
+    // 4. 行追加 / 行削除 / 回答確認
     document.addEventListener('click', (e) => {
+        const addBtn = e.target.closest('.add-row-btn');
+        if (addBtn) {
+            const root = addBtn.closest('.tab-panel');
+            addAnswerRow(root);
+            return;
+        }
+
+        const removeBtn = e.target.closest('.remove-row-btn');
+        if (removeBtn) {
+            const root = removeBtn.closest('.tab-panel');
+            removeAnswerRow(root);
+            return;
+        }
+
         const submitBtn = e.target.closest('.submit-answer-btn');
         if (!submitBtn) return;
 
@@ -2934,6 +2962,46 @@ let currentAnswer = null;
 let missionList = [];
 let currentSubIndex = 0;
 let activeQuestionRoot = null;
+
+function addAnswerRow(root) {
+    if (!root) return;
+
+    const tbody = root.querySelector('.answer-table-body');
+    if (!tbody) return;
+
+    const rows = tbody.querySelectorAll('tr');
+    if (rows.length >= 5) {
+        updateRowCount(root);
+        return;
+    }
+
+    const newRow = rows[0].cloneNode(true);
+    newRow.querySelectorAll('.account-select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+    newRow.querySelectorAll('.amount-input').forEach(input => {
+        input.value = '';
+    });
+
+    tbody.appendChild(newRow);
+    updateRowCount(root);
+}
+
+function removeAnswerRow(root) {
+    if (!root) return;
+
+    const tbody = root.querySelector('.answer-table-body');
+    if (!tbody) return;
+
+    const rows = tbody.querySelectorAll('tr');
+    if (rows.length <= 1) {
+        updateRowCount(root);
+        return;
+    }
+
+    tbody.removeChild(rows[rows.length - 1]);
+    updateRowCount(root);
+}
 
 /**
  * 問題ファイルを読み込む
@@ -3004,8 +3072,8 @@ function handleAnswerSubmit(clickedButton) {
 
     activeQuestionRoot = root;
 
-    const feedback = root.querySelector('#answer-feedback');
-    const rows = root.querySelectorAll('#answer-table-body tr');
+    const feedback = root.querySelector('.answer-feedback');
+    const rows = root.querySelectorAll('.answer-table-body tr');
 
     if (!feedback || rows.length === 0) return;
 
@@ -3037,7 +3105,7 @@ function handleAnswerSubmit(clickedButton) {
 
     if (isCorrect) {
         feedback.style.display = 'block';
-        feedback.className = 'feedback-panel success';
+        feedback.className = 'feedback-panel answer-feedback success';
         feedback.innerHTML = `<strong>MISSION COMPLETE!</strong><br><ruby>正解<rt>せいかい</rt></ruby>です！`;
 
         setTimeout(() => {
@@ -3053,7 +3121,7 @@ function handleAnswerSubmit(clickedButton) {
         }, 1500);
     } else {
         feedback.style.display = 'block';
-        feedback.className = 'feedback-panel';
+        feedback.className = 'feedback-panel answer-feedback';
         feedback.innerHTML = `
             <span style="color: #ff6b6b;"><ruby>残念<rt>ざんねん</rt></ruby>！</span><br>
             <ruby>正解<rt>せいかい</rt></ruby>は <br>
@@ -3068,7 +3136,7 @@ function handleAnswerSubmit(clickedButton) {
  * 完了表示
  */
 function showMissionComplete(root) {
-    const feedback = root.querySelector('#answer-feedback');
+    const feedback = root.querySelector('.answer-feedback');
     const questionText = root.querySelector('.question');
     const answerSection = root.querySelector('.answer-section');
 
@@ -3088,11 +3156,10 @@ function showMissionComplete(root) {
 
     if (feedback) {
         feedback.style.display = 'block';
-        feedback.className = 'feedback-panel success';
+        feedback.className = 'feedback-panel answer-feedback success';
         feedback.innerHTML = 'このステージは<ruby>終<rt>しゅう</rt></ruby><ruby>了<rt>りょう</rt></ruby>です！';
     }
 
-    // 不要部分を非表示
     if (answerSection) {
         const rowControls = answerSection.querySelector('.row-controls');
         const tableWrapper = answerSection.querySelector('.journal-table-wrapper');
@@ -3108,11 +3175,11 @@ function showMissionComplete(root) {
  * 読み込み時の回答欄初期化
  */
 function resetAnswerArea(root) {
-    const feedback = root.querySelector('#answer-feedback');
+    const feedback = root.querySelector('.answer-feedback');
     if (feedback) {
         feedback.style.display = 'none';
         feedback.innerHTML = '';
-        feedback.className = 'feedback-panel';
+        feedback.className = 'feedback-panel answer-feedback';
     }
 
     clearAnswerInputs(root);
@@ -3123,7 +3190,7 @@ function resetAnswerArea(root) {
  * 入力値クリア
  */
 function clearAnswerInputs(root) {
-    const rows = root.querySelectorAll('#answer-table-body tr');
+    const rows = root.querySelectorAll('.answer-table-body tr');
     rows.forEach((row) => {
         row.querySelectorAll('.account-select').forEach(select => {
             select.selectedIndex = 0;
@@ -3138,13 +3205,13 @@ function clearAnswerInputs(root) {
  * 行数表示更新
  */
 function updateRowCount(root) {
-    const rowCountDisplay = root.querySelector('#row-count-display');
-    const rowCount = root.querySelectorAll('#answer-table-body tr').length;
+    const rowCountDisplay = root.querySelector('.row-count-display');
+    const rowCount = root.querySelectorAll('.answer-table-body tr').length;
     if (rowCountDisplay) {
         rowCountDisplay.textContent = `(${rowCount}/5)`;
     }
 }
-</script>
+</script>   
 <script src="../js/main.js"></script>
 </body>
 </html>
